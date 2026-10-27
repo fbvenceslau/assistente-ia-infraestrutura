@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Consulta a API do Proxmox com um token SOMENTE LEITURA.
+# Uso: pveapi /cluster/resources
+#      pveapi /nodes/<nó>/status
+set -euo pipefail
+
+SECRETS="$HOME/.hermes/secrets"
+# shellcheck disable=SC1091
+[ -f "$SECRETS/endpoints.env" ] && . "$SECRETS/endpoints.env"
+: "${PVE_URL:?Defina PVE_URL em $SECRETS/endpoints.env}"
+
+if [ ! -s "$SECRETS/pve.token" ]; then
+  echo "Erro: token não encontrado em $SECRETS/pve.token" >&2
+  exit 1
+fi
+
+# -k aceita o certificado autoassinado padrão do Proxmox.
+exec curl -sk --fail-with-body --max-time 15 \
+  -H "Authorization: $(cat "$SECRETS/pve.token")" \
+  "$PVE_URL/api2/json${1:-/version}"

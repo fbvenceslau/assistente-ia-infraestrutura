@@ -1,0 +1,23 @@
+# Modelo de /home/hermes/.ssh/config
+# Use uma chave exclusiva para o assistente e usuários SOMENTE LEITURA nos equipamentos.
+
+Host mkt
+  HostName 192.168.1.254
+  User hermes
+  IdentityFile ~/.ssh/hermes_ativos
+  IdentitiesOnly yes
+  BatchMode yes
+  ConnectTimeout 8
+  LogLevel ERROR
+  StrictHostKeyChecking accept-new
+
+# Opcional: SSH no host Proxmox para comandos simples (uptime, df, free).
+# O usuário precisa ser comum, SEM sudo. A API (pveapi) já cobre quase tudo.
+# Host pve
+#   HostName 192.168.1.3
+#   User hermes
+#   IdentityFile ~/.ssh/hermes_ativos
+#   IdentitiesOnly yes
+#   BatchMode yes
+#   ConnectTimeout 8
+#   LogLevel ERROR

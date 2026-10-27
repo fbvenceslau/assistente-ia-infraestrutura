@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# Consulta a API da controladora UniFi Network com um usuário SOMENTE LEITURA (View Only).
+# Uso: unifi /api/s/default/stat/health
+#      unifi /api/s/default/stat/device
+#      unifi /api/s/default/stat/sta
+set -euo pipefail
+
+SECRETS="$HOME/.hermes/secrets"
+# shellcheck disable=SC1091
+[ -f "$SECRETS/endpoints.env" ] && . "$SECRETS/endpoints.env"
+: "${UNIFI_URL:?Defina UNIFI_URL em $SECRETS/endpoints.env}"
+# Controladoras UniFi OS (UDM, UXG, Cloud Key Gen2+ e versões recentes) usam o prefixo
+# /proxy/network. Em controladoras antigas, defina UNIFI_PREFIX= (vazio) no endpoints.env.
+UNIFI_PREFIX="${UNIFI_PREFIX-/proxy/network}"
+UNIFI_LOGIN="${UNIFI_LOGIN:-/api/auth/login}"
+
+if [ ! -s "$SECRETS/unifi.json" ]; then
+  echo "Erro: credenciais não encontradas em $SECRETS/unifi.json" >&2
+  exit 1
+fi
+
+JAR=$(mktemp); trap 'rm -f "$JAR"' EXIT
+
+curl -sk --fail -c "$JAR" -o /dev/null --max-time 10 \
+  -H 'Content-Type: application/json' \
+  -d @"$SECRETS/unifi.json" "$UNIFI_URL$UNIFI_LOGIN" \
+  || { echo "Erro: falha no login da UniFi" >&2; exit 1; }
+
+curl -sk -b "$JAR" --max-time 20 "$UNIFI_URL$UNIFI_PREFIX${1:-/api/s/default/stat/health}"

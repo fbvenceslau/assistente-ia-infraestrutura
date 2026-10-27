@@ -1,0 +1,14 @@
+# Modelo de /etc/pve/firewall/<CTID>.fw
+# Bloqueia tudo que entra no container, exceto o computador de administração.
+# Troque 192.168.1.10 pelo IP do seu computador.
+# O tráfego de saída continua liberado (Telegram, provedor de IA, consultas à rede).
+
+[OPTIONS]
+enable: 1
+policy_in: DROP
+policy_out: ACCEPT
+
+[RULES]
+IN ACCEPT -source 192.168.1.10 -p tcp -dport 22 -log nolog # SSH
+IN ACCEPT -source 192.168.1.10 -p tcp -dport 9119 -log nolog # Painel Hermes
+IN Ping(ACCEPT) -log nolog

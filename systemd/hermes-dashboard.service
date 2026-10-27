@@ -1,0 +1,24 @@
+[Unit]
+Description=Hermes Agent Web Dashboard
+After=network-online.target hermes-gateway.service
+Wants=network-online.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User=hermes
+Group=hermes
+WorkingDirectory=/home/hermes
+Environment=HOME=/home/hermes
+Environment=LANG=pt_BR.UTF-8
+Environment=LC_ALL=pt_BR.UTF-8
+Environment=PATH=/home/hermes/.local/bin:/usr/local/bin:/usr/bin:/bin
+EnvironmentFile=/home/hermes/.hermes/.env
+# Escuta em todas as interfaces: proteja com login (.env) e firewall (Passo 9).
+ExecStart=/home/hermes/.local/bin/hermes dashboard --host 0.0.0.0 --port 9119 --no-open --skip-build
+Restart=always
+RestartSec=10
+RestartPreventExitStatus=78
+
+[Install]
+WantedBy=multi-user.target

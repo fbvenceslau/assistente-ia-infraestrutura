@@ -1,0 +1,20 @@
+# Segredos: nunca envie para o GitHub
+.env
+*.env
+!config/*.env.example
+secrets/
+*.token
+unifi.json
+id_*
+hermes_ativos*
+*.pem
+*.key
+
+# Arquivos reais de configuração (publique só os .example)
+/SOUL.md
+/ativos.md
+
+# Sistema
+.DS_Store
+Thumbs.db
+desktop.ini

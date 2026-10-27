@@ -1,0 +1,20 @@
+# Inventário de ativos de rede — 192.168.1.0/24
+
+> Modelo. Troque os IPs e equipamentos pelos da sua rede.
+
+Este assistente roda em 192.168.1.50 (container LXC no Proxmox). Acesso SOMENTE LEITURA em todos os ativos.
+
+| IP | Equipamento | Serviços | Como acessar |
+|---|---|---|---|
+| 192.168.1.1 | Gateway / roteador principal | dns, dhcp | `unifi /api/s/default/stat/device` |
+| 192.168.1.2 | Controladora UniFi Network | https | `unifi /caminho` |
+| 192.168.1.3 | Host Proxmox VE | web 8006 | `pveapi /caminho` (PVEAuditor) |
+| 192.168.1.254 | MikroTik (RouterOS 7) | ssh | `ssh mkt '<comando>'` (grupo read) |
+| 192.168.1.20 | Access point UniFi | — | `unifi /api/s/default/stat/device` |
+
+## Comandos úteis
+
+- **Proxmox:** `pveapi /cluster/resources`, `pveapi /nodes/<nó>/status`, `pveapi /nodes/<nó>/storage`, `pveapi /nodes/<nó>/lxc`, `pveapi /nodes/<nó>/qemu`, `pveapi /cluster/tasks`
+- **UniFi:** `unifi /api/s/default/stat/health` (saúde WAN/LAN/Wi-Fi), `/api/s/default/stat/device` (equipamentos), `/api/s/default/stat/sta` (clientes), `/api/s/default/stat/alarm`, `/api/s/default/stat/event`
+- **MikroTik:** `ssh mkt '/system resource print'`, `'/interface print stats'`, `'/ip route print'`, `'/log print where topics~"error|critical"'`
+- **Rede local:** ping, traceroute, mtr, dig, `nmap -sn 192.168.1.0/24` (leve)
