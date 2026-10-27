@@ -138,6 +138,10 @@ source ~/.bashrc
 hermes --version
 ```
 
+A instalação leva de 10 a 20 minutos e usa cerca de 4 GB de disco. Se ela falhar com `Connection reset by peer`, foi uma queda na conexão com o GitHub. Basta rodar o comando de novo.
+
+> No final, o instalador sugere `hermes gateway install`. **Não use esse comando:** este projeto já traz o próprio serviço do systemd (Passo 8), e os dois entrariam em conflito.
+
 Execute o assistente de configuração e escolha o provedor e o modelo de IA:
 
 ```bash
@@ -232,7 +236,9 @@ systemctl enable --now hermes-gateway
 systemctl status hermes-gateway --no-pager
 ```
 
-**Painel web (opcional):** o Hermes tem um painel de administração na porta `9119`. Antes de ativar, configure o login do painel no `.env` (veja [config/env.example](config/env.example)) e o firewall do Passo 9. Depois:
+Nos logs, os avisos `No messaging platforms enabled` ou `not logged into Nous Portal` indicam que faltou concluir o Passo 5 (`hermes setup`) ou o Passo 6 (`hermes gateway setup`).
+
+**Painel web (opcional):** o Hermes tem um painel de administração na porta `9119`. Como o serviço escuta na rede (`--host 0.0.0.0`), o Hermes exige login. Antes de ativar, configure o login do painel no `.env` (veja [config/env.example](config/env.example)) e o firewall do Passo 9. Depois:
 
 ```bash
 systemctl enable --now hermes-dashboard

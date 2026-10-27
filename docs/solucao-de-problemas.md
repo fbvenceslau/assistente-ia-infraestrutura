@@ -8,6 +8,10 @@ journalctl -u hermes-gateway -f                # acompanhar os logs ao vivo
 journalctl -u hermes-gateway --since "1 hour ago"
 ```
 
+## A instalação do Hermes falha com "Connection reset by peer"
+
+A conexão com o GitHub caiu durante o download. Rode o instalador de novo. Ele continua de onde parou.
+
 ## O assistente não responde no Telegram
 
 1. Confira se o serviço está ativo: `systemctl status hermes-gateway`.
