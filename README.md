@@ -69,7 +69,7 @@ No **host Proxmox** (como root):
 
 ```bash
 apt install -y git
-git clone https://github.com/<SEU-USUARIO>/assistente-ia-infraestrutura.git
+git clone https://github.com/fbvenceslau/assistente-ia-infraestrutura.git
 cd assistente-ia-infraestrutura
 ```
 
